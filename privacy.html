@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — EchoTiles</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --rose: #e8a0b4;
+            --lavender: #b8a9d4;
+            --mint: #a3d4c8;
+            --peach: #f0c4a8;
+            --sky: #a8c8e8;
+            --cream: #fdf6f0;
+            --warm-white: #fefcfa;
+            --text: #3d3449;
+            --text-soft: #6b5f78;
+            --text-muted: #9a8da8;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            background-image:
+                radial-gradient(ellipse 60% 50% at 80% 10%, rgba(163, 212, 200, 0.15), transparent 50%),
+                radial-gradient(ellipse 50% 40% at 15% 90%, rgba(232, 160, 180, 0.1), transparent 45%);
+            color: var(--text-soft);
+            line-height: 1.72;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .aurora {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(circle 300px at 85% 15%, rgba(184, 169, 212, 0.06), transparent),
+                radial-gradient(circle 250px at 10% 85%, rgba(163, 212, 200, 0.06), transparent);
+        }
+
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 48px 24px 72px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(184, 169, 212, 0.2);
+        }
+
+        .header-tiles {
+            display: inline-flex;
+            gap: 4px;
+            margin-bottom: 18px;
+        }
+
+        .header-tile {
+            width: 18px;
+            height: 18px;
+            border-radius: 5px;
+        }
+
+        .header-tile:nth-child(1) { background: var(--rose); }
+        .header-tile:nth-child(2) { background: var(--lavender); }
+        .header-tile:nth-child(3) { background: var(--mint); }
+        .header-tile:nth-child(4) { background: var(--peach); }
+        .header-tile:nth-child(5) { background: var(--sky); }
+
+        .header h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(1.8rem, 4.5vw, 2.4rem);
+            font-weight: 400;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .header h1 em {
+            font-style: italic;
+            color: var(--lavender);
+        }
+
+        .header .effective {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .summary-box {
+            background: linear-gradient(135deg, rgba(184, 169, 212, 0.12) 0%, rgba(163, 212, 200, 0.1) 100%);
+            border: 1px solid rgba(184, 169, 212, 0.2);
+            border-radius: 16px;
+            padding: 22px 24px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .summary-box p {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .policy-section {
+            margin-bottom: 32px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .section-num {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .policy-section:nth-of-type(6n+1) .section-num { background: var(--rose); }
+        .policy-section:nth-of-type(6n+2) .section-num { background: var(--lavender); }
+        .policy-section:nth-of-type(6n+3) .section-num { background: var(--mint); }
+        .policy-section:nth-of-type(6n+4) .section-num { background: var(--peach); }
+        .policy-section:nth-of-type(6n+5) .section-num { background: var(--sky); }
+        .policy-section:nth-of-type(6n+6) .section-num { background: var(--rose); }
+
+        .section-header h2 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-body {
+            padding-left: 44px;
+        }
+
+        .section-body p {
+            font-size: 0.93rem;
+            margin-bottom: 10px;
+            line-height: 1.72;
+        }
+
+        .section-body p:last-child { margin-bottom: 0; }
+        .section-body strong { color: var(--text); font-weight: 600; }
+
+        .section-body ul {
+            margin: 10px 0 0;
+            padding-left: 1.2rem;
+            font-size: 0.9rem;
+        }
+
+        .section-body ul li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+
+        .section-body ul li:last-child { margin-bottom: 0; }
+
+        .callout {
+            margin-top: 12px;
+            background: rgba(255, 255, 255, 0.65);
+            border: 1px solid rgba(184, 169, 212, 0.18);
+            border-radius: 12px;
+            padding: 14px 18px;
+        }
+
+        .callout p {
+            font-size: 0.88rem;
+            color: var(--text-soft);
+            margin: 0;
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(184, 169, 212, 0.2), rgba(232, 160, 180, 0.15), transparent);
+            margin: 32px 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 40px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--lavender);
+            text-decoration: none;
+            padding: 12px 22px;
+            border-radius: 12px;
+            border: 1px solid rgba(184, 169, 212, 0.25);
+            background: rgba(255, 255, 255, 0.5);
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(184, 169, 212, 0.12);
+            border-color: rgba(184, 169, 212, 0.4);
+            color: var(--rose);
+        }
+
+        @media (max-width: 560px) {
+            .page { padding: 32px 18px 56px; }
+            .section-body { padding-left: 0; margin-top: 10px; }
+            .section-header { gap: 10px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora" aria-hidden="true"></div>
+
+    <div class="page">
+        <header class="header">
+            <div class="header-tiles" aria-hidden="true">
+                <span class="header-tile"></span>
+                <span class="header-tile"></span>
+                <span class="header-tile"></span>
+                <span class="header-tile"></span>
+                <span class="header-tile"></span>
+            </div>
+            <h1>Privacy <em>Policy</em></h1>
+            <p class="effective">Effective April 2026 &middot; EchoTiles for iOS</p>
+        </header>
+
+        <div class="summary-box">
+            <p>EchoTiles does not collect any personal data. Your words, your trails, your game — they all stay on your device.</p>
+        </div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">01</span>
+                <h2>Overview</h2>
+            </div>
+            <div class="section-body">
+                <p>This privacy policy describes how data is handled within <strong>EchoTiles</strong>, a word puzzle game available on the Apple App Store. We believe your gameplay should remain private by default.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">02</span>
+                <h2>Data We Collect</h2>
+            </div>
+            <div class="section-body">
+                <p><strong>None.</strong> As indicated in our App Store privacy label, EchoTiles does not collect data from users. There is no account registration, no email collection, and no tracking identifiers.</p>
+                <div class="callout">
+                    <p>All gameplay data — including your echo trails, board memory, journey progress, daily streaks, and Zen Mode sessions — is stored locally on your device.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">03</span>
+                <h2>Third-Party Services</h2>
+            </div>
+            <div class="section-body">
+                <p>EchoTiles does not integrate third-party analytics frameworks, advertising SDKs, or external tracking tools. The app does not share any information with third parties.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">04</span>
+                <h2>On-Device Storage</h2>
+            </div>
+            <div class="section-body">
+                <p>Game progress and settings are saved on your device using standard iOS storage mechanisms. This data may be included in:</p>
+                <ul>
+                    <li>iCloud backups if you have iCloud Backup enabled in your device settings</li>
+                    <li>Local device backups made through Finder or iTunes</li>
+                </ul>
+                <p>You can manage or delete this data by uninstalling the app or adjusting your device backup settings.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">05</span>
+                <h2>Apple Services</h2>
+            </div>
+            <div class="section-body">
+                <p>When you download or update EchoTiles, <strong>Apple</strong> processes information related to that transaction according to Apple's own privacy policy. This includes App Store activity, Apple ID, and related services. That processing is independent of this policy.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">06</span>
+                <h2>Children's Privacy</h2>
+            </div>
+            <div class="section-body">
+                <p>EchoTiles is rated <strong>4+</strong> on the App Store and is suitable for all ages. Since no data is collected, there are no special concerns regarding children's privacy. Parents and guardians can use Apple's Screen Time and parental controls to manage access.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">07</span>
+                <h2>Changes to This Policy</h2>
+            </div>
+            <div class="section-body">
+                <p>If this privacy policy is updated, the effective date at the top of this page will change. For the most current data practices, always refer to the <strong>App Privacy</strong> section on the EchoTiles App Store listing.</p>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="policy-section">
+            <div class="section-header">
+                <span class="section-num">08</span>
+                <h2>Contact</h2>
+            </div>
+            <div class="section-body">
+                <p>For privacy-related questions or concerns about EchoTiles, please use the <strong>App Support</strong> link available on the app's App Store listing page.</p>
+            </div>
+        </div>
+
+        <a class="back-link" href="index.html">&larr; Back to EchoTiles</a>
+    </div>
+</body>
+
+</html>

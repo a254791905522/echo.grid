@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoTiles — Trace words on a living board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --rose: #e8a0b4;
+            --lavender: #b8a9d4;
+            --mint: #a3d4c8;
+            --peach: #f0c4a8;
+            --sky: #a8c8e8;
+            --cream: #fdf6f0;
+            --warm-white: #fefcfa;
+            --text: #3d3449;
+            --text-soft: #6b5f78;
+            --text-muted: #9a8da8;
+        }
+
+        body {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            background-image:
+                radial-gradient(ellipse 80% 60% at 20% 0%, rgba(184, 169, 212, 0.18), transparent 50%),
+                radial-gradient(ellipse 70% 50% at 85% 15%, rgba(232, 160, 180, 0.15), transparent 50%),
+                radial-gradient(ellipse 50% 40% at 50% 100%, rgba(163, 212, 200, 0.12), transparent 45%);
+            min-height: 100vh;
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        .aurora {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            background:
+                radial-gradient(circle 320px at 10% 20%, rgba(232, 160, 180, 0.08), transparent),
+                radial-gradient(circle 280px at 90% 80%, rgba(163, 212, 200, 0.08), transparent);
+            animation: auroraShift 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes auroraShift {
+            0% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 1;
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 48px 24px 64px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .tile-grid {
+            display: inline-grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 28px;
+        }
+
+        .tile {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .tile:nth-child(1) { background: var(--rose); }
+        .tile:nth-child(2) { background: var(--lavender); }
+        .tile:nth-child(3) { background: var(--mint); }
+        .tile:nth-child(4) { background: var(--sky); }
+        .tile:nth-child(5) { background: var(--peach); animation: tileGlow 3s ease-in-out infinite; }
+        .tile:nth-child(6) { background: var(--rose); }
+        .tile:nth-child(7) { background: var(--mint); }
+        .tile:nth-child(8) { background: var(--lavender); }
+        .tile:nth-child(9) { background: var(--sky); }
+
+        @keyframes tileGlow {
+            0%, 100% { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+            50% { box-shadow: 0 2px 20px rgba(240, 196, 168, 0.5); }
+        }
+
+        .app-name {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: clamp(2.4rem, 6vw, 3.2rem);
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.1;
+            margin-bottom: 6px;
+        }
+
+        .app-name em {
+            font-style: italic;
+            color: var(--lavender);
+        }
+
+        .hero-tagline {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--rose);
+            margin-bottom: 16px;
+        }
+
+        .hero-desc {
+            font-size: 1.02rem;
+            color: var(--text-soft);
+            line-height: 1.7;
+            max-width: 480px;
+            margin: 0 auto;
+            font-weight: 500;
+        }
+
+        .pills {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .pill {
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .pill--rose { background: rgba(232, 160, 180, 0.18); color: #c47a92; border: 1px solid rgba(232, 160, 180, 0.3); }
+        .pill--lavender { background: rgba(184, 169, 212, 0.18); color: #8a78a8; border: 1px solid rgba(184, 169, 212, 0.3); }
+        .pill--mint { background: rgba(163, 212, 200, 0.18); color: #5a9a88; border: 1px solid rgba(163, 212, 200, 0.3); }
+        .pill--sky { background: rgba(168, 200, 232, 0.18); color: #5a88b0; border: 1px solid rgba(168, 200, 232, 0.3); }
+
+        .section-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 20px;
+            border: 1px solid rgba(184, 169, 212, 0.2);
+            padding: 32px 28px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .section-card h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .section-card p {
+            font-size: 0.95rem;
+            color: var(--text-soft);
+            line-height: 1.72;
+            margin-bottom: 12px;
+        }
+
+        .section-card p:last-child { margin-bottom: 0; }
+        .section-card strong { color: var(--text); font-weight: 600; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .feature-item {
+            background: var(--warm-white);
+            border-radius: 14px;
+            padding: 20px 18px;
+            border: 1px solid rgba(184, 169, 212, 0.15);
+        }
+
+        .feature-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .feature-dot--rose { background: var(--rose); box-shadow: 0 0 0 4px rgba(232, 160, 180, 0.2); }
+        .feature-dot--lavender { background: var(--lavender); box-shadow: 0 0 0 4px rgba(184, 169, 212, 0.2); }
+        .feature-dot--mint { background: var(--mint); box-shadow: 0 0 0 4px rgba(163, 212, 200, 0.2); }
+        .feature-dot--peach { background: var(--peach); box-shadow: 0 0 0 4px rgba(240, 196, 168, 0.2); }
+        .feature-dot--sky { background: var(--sky); box-shadow: 0 0 0 4px rgba(168, 200, 232, 0.2); }
+
+        .feature-item h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        .feature-item p {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+            margin: 0;
+        }
+
+        .love-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 4px;
+        }
+
+        .love-list li {
+            padding: 8px 0 8px 24px;
+            position: relative;
+            font-size: 0.92rem;
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        .love-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--rose), var(--lavender));
+        }
+
+        .love-list li strong { color: var(--text); }
+
+        .cta-area {
+            text-align: center;
+            margin-top: 36px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--lavender) 0%, var(--rose) 100%);
+            color: #fff;
+            padding: 16px 40px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-size: 0.98rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            border: none;
+            box-shadow: 0 8px 32px rgba(184, 169, 212, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px rgba(184, 169, 212, 0.4);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(184, 169, 212, 0.15);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .footer a {
+            color: var(--lavender);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover { color: var(--rose); text-decoration: underline; }
+
+        @media (max-width: 560px) {
+            .wrapper { padding: 32px 18px 48px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .section-card { padding: 24px 20px; }
+            .app-name { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="aurora" aria-hidden="true"></div>
+
+    <div class="wrapper">
+        <section class="hero">
+            <div class="tile-grid" aria-hidden="true">
+                <span class="tile">E</span>
+                <span class="tile">C</span>
+                <span class="tile">H</span>
+                <span class="tile">O</span>
+                <span class="tile">T</span>
+                <span class="tile">I</span>
+                <span class="tile">L</span>
+                <span class="tile">E</span>
+                <span class="tile">S</span>
+            </div>
+            <h1 class="app-name">Echo<em>Tiles</em></h1>
+            <p class="hero-tagline">Trace words on a living board</p>
+            <p class="hero-desc">A beautiful word puzzle where every word you find leaves a memory behind. Connect letters, build glowing paths, and watch the board begin to remember how you play.</p>
+            <div class="pills">
+                <span class="pill pill--rose">Free</span>
+                <span class="pill pill--lavender">Word Puzzle</span>
+                <span class="pill pill--mint">iPhone &amp; iPad</span>
+                <span class="pill pill--sky">iOS 26.4+</span>
+            </div>
+        </section>
+
+        <div class="section-card">
+            <h2>A Board That Remembers</h2>
+            <p>Unlike standard word games that reset after every round, EchoTiles introduces a <strong>living board experience</strong>. Trace words across a soft pastel board, connect neighboring letters, and build glowing paths that persist.</p>
+            <p>Some of your completed word trails remain visible and can return in future puzzles as gentle bonuses, reusable paths, and magical <strong>"echo" effects</strong>. The result is a word puzzle that feels more personal, more alive, and more rewarding over time.</p>
+        </div>
+
+        <div class="section-card">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--rose"></div>
+                    <h3>Living Echo Trails</h3>
+                    <p>Every valid word creates a glowing trail. Some trails are preserved and reappear in future puzzles.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--lavender"></div>
+                    <h3>Board Memory</h3>
+                    <p>The game remembers your previous play and turns it into visual and gameplay interactions on later boards.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--mint"></div>
+                    <h3>Journey Mode</h3>
+                    <p>Handcrafted levels with increasing challenge, smooth pacing, and elegant puzzle flow.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--peach"></div>
+                    <h3>Daily Echo</h3>
+                    <p>Return each day for a fresh daily puzzle and build your streak over time.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--sky"></div>
+                    <h3>Zen Mode</h3>
+                    <p>A calm, no-pressure experience focused on relaxing word discovery and satisfying visual feedback.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-dot feature-dot--rose"></div>
+                    <h3>Signature Style</h3>
+                    <p>Gently tracks your puzzle habits and reveals a light player style profile based on how you play.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <h2>Why You'll Love It</h2>
+            <ul class="love-list">
+                <li><strong>Trace words</strong> through neighboring tiles and discover hidden connections</li>
+                <li>Experience a <strong>board that remembers</strong> your journey and evolves with you</li>
+                <li>Enjoy beautiful <strong>glowing path effects</strong> with soft pastel cartoon design</li>
+                <li>Play <strong>daily challenges</strong> and relaxing sessions at your own pace</li>
+                <li>A polished <strong>native iPhone puzzle game</strong> with premium visual style</li>
+                <li><strong>Fully playable for free</strong> — no essentials locked behind a paywall</li>
+            </ul>
+        </div>
+
+        <div class="cta-area">
+            <a href="https://apps.apple.com/us/app/echotiles/id6762001197?uo=4" class="cta-btn" target="_blank" rel="noopener noreferrer">
+                Download on the App Store
+            </a>
+        </div>
+
+        <div class="footer">
+            <a href="privacy.html">Privacy Policy</a> &middot; EchoTiles
+        </div>
+    </div>
+</body>
+
+</html>
